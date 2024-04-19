@@ -1,24 +1,21 @@
-import dotenv from 'dotenv';
 import express from 'express';
-import pkg from 'pg'; 
-const { Pool } = pkg;
-dotenv.config();
+import pkg from 'pg';
+import dotenv from 'dotenv';
 
+dotenv.config()
+
+const { Pool } = pkg;
 const app = express();
 app.use(express.json());
 
-
-
-// const pool = new Pool({
-//     connectionString: 'postgres://postgres:admin@127.0.0.1:5432/postgres'
-//   });
+const env = process.env;
 
 const pool = new Pool({
-  user: 'postgres',
-  host: '127.0.0.1',
-  database: 'postgres',
-  password: 'admin',
-  port: 5432,
+  user: env.DB_USER,
+  host: env.DB_HOST,
+  database: env.DB_NAME,
+  password: env.DB_PASSWORD,
+  port: env.DB_PORT,
 });
 
 pool.connect()
@@ -29,10 +26,8 @@ pool.connect()
         
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
-  console.log(process.env.DATABASE_URL)
   try {
     const { rows } = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
-
     console.log(rows);
 
   } catch (error) {
