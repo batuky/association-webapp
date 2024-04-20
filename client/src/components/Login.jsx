@@ -14,7 +14,6 @@ const onFinish = async (values) => {
     });
     const data = response.data;
     console.log(data);
-    localStorage.setItem('token', data.token);
     console.log('Login successful');
   } catch (error) {
     console.error('There was an error!', error);

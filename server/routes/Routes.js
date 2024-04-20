@@ -27,11 +27,17 @@ pool.connect()
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
-    const { rows } = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
-    console.log(rows);
-
+    const { rows } = await pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
+    if (rows.length > 0) {
+      console.log('Login successful:', rows);
+      res.status(200).json({ message: "Login successful" });
+    } else {
+      console.log('Login failed');
+      res.status(401).json({ message: "Login failed" });
+    }
   } catch (error) {
-    console.error(error);
+    console.error('Database error:', error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
