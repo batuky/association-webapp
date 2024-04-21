@@ -1,7 +1,8 @@
-import './login.css'
+// login.jsx
+
+import './login.css';
 import { Button, Checkbox, Form, Input } from 'antd';
 import axios from 'axios';
-
 
 const onFinish = async (values) => {
   console.log('Password:', values.password);
@@ -15,6 +16,7 @@ const onFinish = async (values) => {
     const data = response.data;
     console.log(data);
     console.log('Login successful');
+    localStorage.setItem('token', data.token);
   } catch (error) {
     console.error('There was an error!', error);
     if (error.code === 'ECONNABORTED') {

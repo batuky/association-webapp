@@ -1,6 +1,8 @@
 import express from 'express';
 import pkg from 'pg';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import { authenticateToken } from '../middleware/authenticateToken.js'
 
 dotenv.config()
 
@@ -29,8 +31,14 @@ app.post('/login', async (req, res) => {
   try {
     const { rows } = await pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
     if (rows.length > 0) {
+      // user found, create a token
+      const token = jwt.sign(
+        { userId: rows[0].id, username: rows[0].username },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
       console.log('Login successful:', rows);
-      res.status(200).json({ message: "Login successful" });
+      res.status(200).json({ message: "Login successful", token });
     } else {
       console.log('Login failed');
       res.status(401).json({ message: "Login failed" });
@@ -39,6 +47,11 @@ app.post('/login', async (req, res) => {
     console.error('Database error:', error);
     res.status(500).json({ message: "Internal Server Error" });
   }
+});
+
+
+app.get('/adminDashboard', authenticateToken, (req, res) => {
+  res.status(200).json({ message: "Welcome to the admin dashboard!", username: req.user });
 });
 
 export default app;
