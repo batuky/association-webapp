@@ -1,18 +1,11 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors'; 
-import routes from './routes/Routes.js';
-
-dotenv.config();
-
+const express = require('express');
 const app = express();
-app.use(express.json());
+const port = process.env.SERVER_PORT || 3002;
 
-app.use(cors());
+const routes = require('./routes/routes');
 
 app.use(routes);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server activated on ${port}.`);
 });
