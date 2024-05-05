@@ -27,7 +27,7 @@ const items = [
     
     
 ];
-const App = () => {
+export default function PageLayout({ children }){
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -70,7 +70,7 @@ const App = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            Bill is a cat.
+            {children}
           </div>
         </Content>
         <Footer
@@ -78,10 +78,9 @@ const App = () => {
             textAlign: 'center',
           }}
         >
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
+          Batuhan Kaya tarafından oluşturuldu ©{new Date().getFullYear()}.
         </Footer>
       </Layout>
     </Layout>
   );
 };
-export default App;
