@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Input } from 'antd';
-import '../../assests/css/forgotPassword.css';
+import '../../assets/css/forgotPassword.css';
 
 const onFinish = (values) => {
   console.log('Success:', values);

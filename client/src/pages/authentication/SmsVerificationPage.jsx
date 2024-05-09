@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
-import '../../assests/css/smsVerificationPage.css';
+import '../../assets/css/smsVerificationPage.css';
 
 const SmsVerificationPage = () => {
   const [verificationCode, setVerificationCode] = useState('');

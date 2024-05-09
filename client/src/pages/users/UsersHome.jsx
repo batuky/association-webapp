@@ -1,7 +1,6 @@
 import React from 'react';
 import { Layout, Form, Input, Button } from 'antd';
 import LayoutComponent from '../../components/Layout';
-import '../../assests/css/users.css';
 
 const { Content } = Layout;
 
@@ -15,7 +14,7 @@ const UsersHome = () => {
       <Content>
         <div style={{ padding: 24, minHeight: 360 }}>
           <Form onFinish={onFinish}>
-            <Form.Item label="Name" name={['user', 'name']} className="form-item">
+            <Form.Item label="User ID" name={['user', 'userId']} className="form-item">
               <Input disabled className="input" />
             </Form.Item>
             <Form.Item label="Email" name={['user', 'email']} className="form-item">

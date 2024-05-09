@@ -1,86 +1,77 @@
 import React, { useState } from 'react';
-import {
-  DesktopOutlined,
-  OrderedListOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import '../assests/css/layout.css';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Link, Routes, Route, useLocation } from 'react-router-dom';
+import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, DollarOutlined, OrderedListOutlined, TeamOutlined } from '@ant-design/icons';
+import { Breadcrumb, Layout, Menu, Button } from 'antd';
+import '../assets/css/layout.css';
+import UsersHome from '../pages/users/UsersHome';
+import FinancialAidsHome from '../pages/FinancialAids/FinancialAidsHome';
+import RequirementsHome from '../pages/requirements/RequirementsHome';
+import FamiliesHome from '../pages/families/FamiliesHome';
+
 const { Header, Content, Footer, Sider } = Layout;
 
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
 const items = [
-    getItem('Kullanıcı', 'sub1', <UserOutlined />),
-    getItem('Yardımlar', '2', <DesktopOutlined />),
-    getItem('İhtiyaçlar', '9', <OrderedListOutlined />),
-    getItem('Aileler', 'sub2', <TeamOutlined />),
-    getItem('İstatistik', '1', <PieChartOutlined />)
-    
-    
+  { key: '1', label: 'Kullanıcı', icon: <UserOutlined />, path: '/kullanicilar' },
+  { key: '2', label: 'Finansal Yardımlar', icon: <DollarOutlined />, path: '/finansal-yardimlar' },
+  { key: '3', label: 'İhtiyaçlar', icon: <OrderedListOutlined />, path: '/ihtiyaclar' },
+  { key: '4', label: 'Aileler', icon: <TeamOutlined />, path: '/aileler' },
 ];
-export default function PageLayout({ children }){
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+
+const PageLayout = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(true);
+  const { pathname } = useLocation();
+
+  const getSelectedKeyFromPath = () => items.find(item => item.path === pathname)?.key || '1';
+
+  const selectedKey = getSelectedKeyFromPath();
+  const toggleCollapsed = () => setCollapsed(!collapsed);
+
   return (
-    <Layout
-      style={{
-        minHeight: '100vh',
-      }}
-    >
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-        <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={setCollapsed}
+        breakpoint="lg"
+        onBreakpoint={broken => setCollapsed(broken)}
+        trigger={null}
+      >
+        <div className="demo-logo-vertical" style={{ marginTop: 8 }} />
+        <Menu theme="dark" mode="inline" selectedKeys={[selectedKey]}>
+          {items.map(({ key, icon, label, path }) => (
+            <Menu.Item key={key} icon={icon}>
+              <Link to={path}>{label}</Link>
+            </Menu.Item>
+          ))}
+        </Menu>
       </Sider>
       <Layout>
-        <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-          }}
-        />
-        <Content
-          style={{
-            margin: '0 16px',
-          }}
-        >
-          <Breadcrumb
-            style={{
-              margin: '16px 0',
-            }}
-          >
+        <Header style={{ padding: 0, background: '#fff' }}>
+          <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16, marginLeft: 16 }}>
+            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          </Button>
+        </Header>
+        <Content style={{ margin: '0 16px' }}>
+          <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
           </Breadcrumb>
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
+          <div className="container" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+            <Routes>
+              <Route path="/kullanicilar" element={<UsersHome />} />
+              <Route path="/finansal-yardimlar" element={<FinancialAidsHome />} />
+              <Route path="/ihtiyaclar" element={<RequirementsHome />} />
+              <Route path="/aileler" element={<FamiliesHome />} />
+            </Routes>
             {children}
           </div>
         </Content>
-        <Footer
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          Batuhan Kaya tarafından oluşturuldu ©{new Date().getFullYear()}.
+        <Footer style={{ textAlign: 'center' }}>
+          Batuhan Kaya tarafından oluşturuldu ©{new Date().getFullYear()}
         </Footer>
       </Layout>
     </Layout>
   );
 };
+
+export default PageLayout;

@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 768px) {
+.ant-layout-sider.ant-layout-sider-collapsed {
+  display: none; /* Hide the sidebar when it is collapsed */
+}
+.responsive-content {
+  padding: 10px;
+  margin: 0;
+}
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+.responsive-content {
+  padding: 15px;
+}
+}
+
+@media screen and (min-width: 1025px) {
+.responsive-content {
+  padding: 24px;
+}
+} 
+
+
+.table-row-light {
+  background-color: #ffffff; /* beyaz */
+}
+
+.table-row-dark {
+  background-color: #f7f7f7; /* açık gri */
+}
