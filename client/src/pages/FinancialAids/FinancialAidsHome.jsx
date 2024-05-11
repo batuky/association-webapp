@@ -99,7 +99,11 @@ const FinancalAidsHome = () => {
     <LayoutComponent>
       <Content>
         <div style={{ marginBottom: 16 }}>
-        <Button icon={<PlusOutlined />} style={{ borderColor: '#28a745' }} onClick={() => showModal(null)}>
+        <Button 
+          icon={<PlusOutlined />} 
+          style={{ borderColor: '#28a745' }} 
+          onClick={() => showModal(true)}
+        >
           Finansal yardım ekle
         </Button>
         </div>

@@ -25,7 +25,11 @@ const AddFinancialAidModal = ({ visible, onCancel, onFormSubmit }) => {
       ]}
     >
       <Form>
-        <Form.Item name="familySurname" label="Aile Soyadı">
+        <Form.Item 
+          name="familySurname" 
+          label="Aile Soyadı"
+          rules={[{ required: true, message: 'Lütfen adresi giriniz!' }]}
+        >
           <Input />
         </Form.Item>
         <Form.Item name="address" label="Adres">

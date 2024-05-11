@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout, Table, Button, Space, Tag } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import AddRequirementModal from './AddRequirementModal';
+import UpdateRequirementModal from './UpdateRequirementModal';
 import LayoutComponent from '../../components/Layout';
 
 const { Content } = Layout;
@@ -47,38 +49,89 @@ const RequirementsHome = () => {
     {
       title: 'İşlemler',
       key: 'actions',
-      render: (_, record) => (
+      render: (_, record) => (     
         <Space>
-          <Link to={`/update-requirement/${record.id}`}>
-            <Button type="primary" icon={<EditOutlined />} size="small">Güncelle</Button>
-          </Link>
-          <Link to={`/delete-requirement/${record.id}`}>
-            <Button type="primary" danger icon={<DeleteOutlined />} size="small">Sil</Button>
-          </Link>
+          <Button type="primary" icon={<EditOutlined />} size="small" onClick={() => showUpdateModal(record)}>Güncelle</Button>
+          <Button type="primary" danger icon={<DeleteOutlined />} size="small">Sil</Button>
         </Space>
       ),
     }
   ];
 
-  const data = [
+  const [data, setData] = useState([
     { id: 1, family: 'Yılmaz Ailesi', deadline: '2024-12-31', importance: ['yüksek'] },
     { id: 2, family: 'Kara Ailesi', deadline: '2024-10-20', importance: ['düşük'] },
     { id: 3, family: 'Demir Ailesi', deadline: '2024-11-15', importance: ['orta'] },
-  ];
+  ]);
 
-  const getRowClassName = (record, index) => {
+
+  const getRowClassName = (index) => {
     return index % 2 === 0 ? 'table-row-light' : 'table-row-dark';
   };
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [currentRequirement, setCurrentRequirement] = useState(null);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCreate = (values) => {
+    console.log('Received values of form: ', values);
+    setIsModalVisible(false);
+    // Burada form verileri ile ilgili işlemler yapılabilir
+  };
+
+
+  const showUpdateModal = (requirement) => {
+    setCurrentRequirement(requirement);
+    setIsUpdateModalVisible(true);
+  };
+
+  const handleUpdateCancel = () => {
+    setIsUpdateModalVisible(false);
+  };
+
+  const handleUpdate = (values) => {
+    const newData = data.map(item => {
+      if (item.id === parseInt(values.id)) { // Make sure IDs are compared correctly
+        return { ...item, ...values, importance: values.importance };
+      }
+      return item;
+    });
+    setData(newData);
+    setIsUpdateModalVisible(false);
+  };
+  
 
   return (
     <LayoutComponent>
       <Content>
         <div>
           <div style={{ marginBottom: 16 }}>
-            <Link to="/create-requirement">
-              <Button icon={<PlusOutlined />} style={{ borderColor: '#28a745' }}>İhtiyaç Ekle</Button>
-            </Link>
+            <Button 
+              icon={<PlusOutlined />} 
+              style={{ borderColor: '#28a745' }} 
+              onClick={showModal}>
+                İhtiyaç Ekle
+            </Button>
           </div>
+          <AddRequirementModal
+            visible={isModalVisible}
+            onCancel={handleCancel}
+            onCreate={handleCreate}
+          />
+          <UpdateRequirementModal
+            visible={isUpdateModalVisible}
+            onCancel={handleUpdateCancel}
+            onUpdate={handleUpdate}
+            requirement={currentRequirement}
+          />
           <Table 
             columns={columns} 
             dataSource={data} 

@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout, Space, Table, Button } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
 import LayoutComponent from '../../components/Layout';
+import AddFamilyModal from './AddFamilyModal';
+import UpdateFamilyModal from './UpdateFamilyModal';
 
 const { Content } = Layout;
 
 const RequirementsHome = () => {
+  const [visible, setVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
+  const [currentFamily, setCurrentFamily] = useState(null);
+  const [data, setData] = useState([
+    { key: '1', familySurname: 'John Brown', address: 'New York No. 1 Lake Park', phoneNumber: '1234567890' },
+    { key: '2', familySurname: 'Jim Green', address: 'London No. 2 Lake Park', phoneNumber: '0987654321' },
+    { key: '3', familySurname: 'Jim yellow', address: 'London No. 3 Lake Park', phoneNumber: '111111111111' },
+    { key: '4', familySurname: 'Jim red', address: 'London No. 4 Lake Park', phoneNumber: '22222222222' },
+    { key: '5', familySurname: 'Jim grey', address: 'London No. 5 Lake Park', phoneNumber: '33333333' },
+  ]);
+
   const columns = [
     {
       title: 'Aile Soyadı',
       dataIndex: 'familySurname',
       key: 'familySurname',
-      render: (text) => <a>{text}</a>,
+      render: text => <a>{text}</a>,
       sorter: (a, b) => a.familySurname.localeCompare(b.familySurname),
     },
     {
@@ -32,82 +44,44 @@ const RequirementsHome = () => {
       key: 'actions',
       render: (_, record) => (
         <Space>
-          <Link to={`/update-family/${record.id}`}>
-            <Button type="primary" icon={<EditOutlined />} size="small">Güncelle</Button>
-          </Link>
-          <Link to={`/delete-family/${record.id}`}>
-            <Button type="primary" danger icon={<DeleteOutlined />} size="small">Sil</Button>
-          </Link>
+          <Button type="primary" icon={<EditOutlined />} size="small" onClick={() => handleEdit(record)}>Güncelle</Button>
+          <Button type="primary" danger icon={<DeleteOutlined />} size="small">Sil</Button>
         </Space>
       ),
     },
   ];
 
-  const data = [
-    {
-      key: '1',
-      familySurname: 'John Brown',
-      address: 'New York No. 1 Lake Park',
-      phoneNumber: '1234567890',
-    },
-    {
-      key: '2',
-      familySurname: 'Jim Green',
-      address: 'London No. 1 Lake Park',
-      phoneNumber: '0987654321',
-    },
-    {
-      key: '3',
-      familySurname: 'Joe Black',
-      address: 'Sydney No. 1 Lake Park',
-      phoneNumber: '5678901234',
-    },
-    {
-      key: '4',
-      familySurname: 'Jim Green',
-      address: 'London No. 1 Lake Park',
-      phoneNumber: '0987654321',
-    },
-    {
-      key: '5',
-      familySurname: 'Joe Black',
-      address: 'Sydney No. 1 Lake Park',
-      phoneNumber: '5678901234',
-    },
-    {
-      key: '6',
-      familySurname: 'Jim Green',
-      address: 'London No. 1 Lake Park',
-      phoneNumber: '0987654321',
-    },
-    {
-      key: '7',
-      familySurname: 'Joe Black',
-      address: 'Sydney No. 1 Lake Park',
-      phoneNumber: '5678901234',
-    },
-  ];
+  const handleEdit = record => {
+    setCurrentFamily(record);
+    setUpdateVisible(true);
+  };
 
-  const getRowClassName = (record, index) => {
-    return index % 2 === 0 ? 'table-row-light' : 'table-row-dark';
+  const handleAddFamily = family => {
+    const newData = { key: String(data.length + 1), ...family };
+    setData([...data, newData]);
+    setVisible(false);
+  };
+
+  const handleUpdateFamily = updatedFamily => {
+    const newData = data.map(item => item.key === updatedFamily.key ? updatedFamily : item);
+    setData(newData);
+    setUpdateVisible(false);
   };
 
   return (
     <LayoutComponent>
       <Content>
         <div style={{ marginBottom: 16 }}>
-          <Button icon={<PlusOutlined />} style={{ borderColor: '#28a745' }}>
+          <Button 
+            icon={<PlusOutlined />} 
+            style={{ borderColor: '#28a745' }} 
+            onClick={() => setVisible(true)}>
             Aile Ekle
           </Button>
         </div>
-        <div>
-          <Table 
-            columns={columns} 
-            dataSource={data} 
-            rowClassName={getRowClassName}
-            scroll={{ x: 'max-content' }}
-          />
-        </div>
+        <AddFamilyModal visible={visible} onCreate={handleAddFamily} onCancel={() => setVisible(false)} />
+        <UpdateFamilyModal visible={updateVisible} onUpdate={handleUpdateFamily} onCancel={() => setUpdateVisible(false)} initialData={currentFamily} />
+        <Table columns={columns} dataSource={data} rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'} scroll={{ x: 'max-content' }} />
       </Content>
     </LayoutComponent>
   );

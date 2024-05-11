@@ -1,9 +1,11 @@
 "use strict";
 
+require('dotenv').config();
+
 var express = require('express');
 
 var app = express();
-var port = process.env.SERVER_PORT || 3002;
+var port = process.env.SERVER_PORT;
 
 var routes = require('./routes/routes');
 
