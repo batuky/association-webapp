@@ -1,9 +1,22 @@
 const express = require('express');
 const router = express.Router();
+const familiesModel = require('../models/familiesModel');
 
 // /aileler URL
-router.get('/aileler', (req, res) => {
-    res.send('Aileler sayfası');
+router.get('/aileler', async (req, res) => {
+    try {
+        const families = await familiesModel.getFamilies(); // Correctly using getFamilies from familiesModel
+        res.status(200).json({
+            success: true,
+            data: families
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Server error',
+            error: error.message
+        });
+    }
 });
   
 // /aileler/ekle URL
