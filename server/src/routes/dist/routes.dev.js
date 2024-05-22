@@ -10,7 +10,7 @@ var userRoutes = require('./userRoutes');
 
 var familyRoutes = require('./familyRoutes');
 
-var associationRoutes = require('./associationRoutes');
+var financalAidRoutes = require('./financalAidRoutes');
 
 var requirementRoutes = require('./requirementRoutes'); // Root URL
 
@@ -22,6 +22,6 @@ router.get('/', function (req, res) {
 router.use(loginRoutes);
 router.use(userRoutes);
 router.use(familyRoutes);
-router.use(associationRoutes);
+router.use(financalAidRoutes);
 router.use(requirementRoutes);
 module.exports = router;

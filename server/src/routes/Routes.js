@@ -3,7 +3,7 @@ const router = express.Router();
 const loginRoutes = require('./loginRoutes');
 const userRoutes = require('./userRoutes');
 const familyRoutes = require('./familyRoutes');
-const associationRoutes = require('./associationRoutes');
+const financalAidRoutes = require('./financalAidRoutes');
 const requirementRoutes = require('./requirementRoutes');
 
 // Root URL
@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 router.use(loginRoutes);
 router.use(userRoutes);
 router.use(familyRoutes);
-router.use(associationRoutes);
+router.use(financalAidRoutes);
 router.use(requirementRoutes);
 
 module.exports = router;

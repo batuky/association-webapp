@@ -4,24 +4,24 @@ var express = require('express');
 
 var router = express.Router();
 
-var requirementsModel = require('../models/requirementsModel'); //Get all requirements URL
+var financalAidModel = require('../models/financalAidModel'); //Get all financial aids
 
 
-router.get('/ihtiyaclar', function _callee(req, res) {
-  var ihtiyaclar;
+router.get('/finansal-yardimlar', function _callee(req, res, next) {
+  var yardimlar;
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return regeneratorRuntime.awrap(requirementsModel.getIhtiyaclar());
+          return regeneratorRuntime.awrap(financalAidModel.getFinansalYardimlar());
 
         case 3:
-          ihtiyaclar = _context.sent;
+          yardimlar = _context.sent;
           res.status(200).json({
             success: true,
-            data: ihtiyaclar
+            data: yardimlar
           });
           _context.next = 10;
           break;
@@ -29,11 +29,7 @@ router.get('/ihtiyaclar', function _callee(req, res) {
         case 7:
           _context.prev = 7;
           _context.t0 = _context["catch"](0);
-          res.status(500).json({
-            success: false,
-            message: 'Server error',
-            error: _context.t0.message
-          });
+          next(_context.t0);
 
         case 10:
         case "end":
@@ -41,10 +37,10 @@ router.get('/ihtiyaclar', function _callee(req, res) {
       }
     }
   }, null, null, [[0, 7]]);
-}); //Get a requirement by ID
+}); //Get a specific financial aid by ID
 
-router.get('/ihtiyac/:id', function _callee2(req, res) {
-  var id, ihtiyac;
+router.get('/finansal-yardim/:id', function _callee2(req, res, next) {
+  var id, yardim;
   return regeneratorRuntime.async(function _callee2$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -52,20 +48,20 @@ router.get('/ihtiyac/:id', function _callee2(req, res) {
           id = req.params.id;
           _context2.prev = 1;
           _context2.next = 4;
-          return regeneratorRuntime.awrap(requirementsModel.getIhtiyacById(id));
+          return regeneratorRuntime.awrap(financalAidModel.getFinansalYardimById(id));
 
         case 4:
-          ihtiyac = _context2.sent;
+          yardim = _context2.sent;
 
-          if (ihtiyac) {
+          if (yardim) {
             res.status(200).json({
               success: true,
-              data: ihtiyac
+              data: yardim
             });
           } else {
             res.status(404).json({
               success: false,
-              message: 'İhtiyaç bulunamadı'
+              message: 'Yardım not found'
             });
           }
 
@@ -75,11 +71,7 @@ router.get('/ihtiyac/:id', function _callee2(req, res) {
         case 8:
           _context2.prev = 8;
           _context2.t0 = _context2["catch"](1);
-          res.status(500).json({
-            success: false,
-            message: 'Sunucu hatası',
-            error: _context2.t0.message
-          });
+          next(_context2.t0);
 
         case 11:
         case "end":
@@ -87,9 +79,5 @@ router.get('/ihtiyac/:id', function _callee2(req, res) {
       }
     }
   }, null, null, [[1, 8]]);
-}); // /ihtiyaclar/ekle URL
-
-router.get('/ihtiyaclar/ekle', function (req, res) {
-  res.send('İhtiyaç ekleme sayfası');
 });
 module.exports = router;
