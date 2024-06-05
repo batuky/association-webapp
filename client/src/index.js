@@ -24,7 +24,7 @@ ReactDOM.render(
         <Route path='/finansal-yardimlar' element={<FinancalAidsHome />} />
         <Route path='/aileler' element={<FamiliesHome />} />
         <Route path='/ihtiyaclar' element={<RequirementsHome />} />
-        <Route path='/kullanicilar' element={<UsersHome />} />
+        <Route path='/kullanici' element={<UsersHome />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

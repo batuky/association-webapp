@@ -11,7 +11,7 @@ import FamiliesHome from '../pages/families/FamiliesHome';
 const { Header, Content, Footer, Sider } = Layout;
 
 const items = [
-  { key: '1', label: 'Kullanıcı', icon: <UserOutlined />, path: '/kullanicilar' },
+  { key: '1', label: 'Kullanıcı', icon: <UserOutlined />, path: '/kullanici' },
   { key: '2', label: 'Finansal Yardımlar', icon: <DollarOutlined />, path: '/finansal-yardimlar' },
   { key: '3', label: 'İhtiyaçlar', icon: <OrderedListOutlined />, path: '/ihtiyaclar' },
   { key: '4', label: 'Aileler', icon: <TeamOutlined />, path: '/aileler' },
@@ -58,7 +58,7 @@ const PageLayout = ({ children }) => {
           </Breadcrumb>
           <div className="container" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
             <Routes>
-              <Route path="/kullanicilar" element={<UsersHome />} />
+              <Route path="/kullanici" element={<UsersHome />} />
               <Route path="/finansal-yardimlar" element={<FinancialAidsHome />} />
               <Route path="/ihtiyaclar" element={<RequirementsHome />} />
               <Route path="/aileler" element={<FamiliesHome />} />
