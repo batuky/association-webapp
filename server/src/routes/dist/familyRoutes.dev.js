@@ -6,15 +6,16 @@ var router = express.Router();
 
 var familiesModel = require('../models/familiesModel');
 
+var authenticateToken = require('../middleware/authMiddleware');
+
 var _require = require('../middleware/middleware'),
     errorHandler = _require.errorHandler;
 
 var _require2 = require('../utils/utlils'),
-    isValidId = _require2.isValidId;
+    isValidId = _require2.isValidId; // Get all families
 
-router.use(errorHandler); //Get all families
 
-router.get('/aileler', function _callee(req, res, next) {
+router.get('/aileler', authenticateToken, function _callee(req, res, next) {
   var families;
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
@@ -44,7 +45,7 @@ router.get('/aileler', function _callee(req, res, next) {
       }
     }
   }, null, null, [[0, 7]]);
-}); //Get a family by id
+}); // Get a family by id
 
 router.get('/aile/:id', function _callee2(req, res, next) {
   var id, aile;
@@ -98,7 +99,7 @@ router.get('/aile/:id', function _callee2(req, res, next) {
       }
     }
   }, null, null, [[0, 10]]);
-}); //Get members of a family by family id
+}); // Get members of a family by family id
 
 router.get('/aile/:id/uyeler', function _callee3(req, res, next) {
   var id, uyeler;
@@ -161,5 +162,7 @@ router.get('/aile/ekle', function (req, res) {
 router.get('/aile/:id/uyeler/ekle', function (req, res) {
   var id = req.params.id;
   res.send("Aile \xFCyesi ekleme sayfas\u0131 - Aile ID: ".concat(id));
-});
+}); // Error handling middleware
+
+router.use(errorHandler);
 module.exports = router;

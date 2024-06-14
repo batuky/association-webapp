@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const loginRoutes = require('./loginRoutes');
+const authRoutes = require('./authRoutes');
 const userRoutes = require('./userRoutes');
 const familyRoutes = require('./familyRoutes');
-const financalAidRoutes = require('./financalAidRoutes');
+const financialAidRoutes = require('./financalAidRoutes');
 const requirementRoutes = require('./requirementRoutes');
 
 // Root URL
@@ -11,11 +11,11 @@ router.get('/', (req, res) => {
   res.send('Welcome to the homepage');
 });
 
-// loginRoutes'ı mevcut router'a bağla
-router.use(loginRoutes);
+// Connect routes to the router
+router.use('/api/auth', authRoutes);
 router.use(userRoutes);
-router.use(familyRoutes);
-router.use(financalAidRoutes);
+router.use('/api/families', familyRoutes);
+router.use(financialAidRoutes);
 router.use(requirementRoutes);
 
 module.exports = router;

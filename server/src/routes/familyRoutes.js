@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const familiesModel = require('../models/familiesModel');
+const authenticateToken = require('../middleware/authMiddleware');
 const { errorHandler } = require('../middleware/middleware');
 const { isValidId } = require('../utils/utlils');
 
-router.use(errorHandler);
-
-//Get all families
-router.get('/aileler', async (req, res, next) => {
+// Get all families
+router.get('/aileler', authenticateToken, async (req, res, next) => {
     try {
         const families = await familiesModel.getFamilies();
         res.status(200).json({
@@ -19,7 +18,7 @@ router.get('/aileler', async (req, res, next) => {
     }
 });
 
-//Get a family by id
+// Get a family by id
 router.get('/aile/:id', async (req, res, next) => {
     try {
         const id = req.params.id;
@@ -46,8 +45,7 @@ router.get('/aile/:id', async (req, res, next) => {
     }
 });
 
-
-//Get members of a family by family id
+// Get members of a family by family id
 router.get('/aile/:id/uyeler', async (req, res, next) => {
     const id = req.params.id;
     if (!isValidId(id)) {
@@ -75,7 +73,6 @@ router.get('/aile/:id/uyeler', async (req, res, next) => {
     }
 });
 
-
 // /aileler/ekle URL
 router.get('/aile/ekle', (req, res) => {
     res.send('Aile ekleme sayfası');
@@ -86,5 +83,8 @@ router.get('/aile/:id/uyeler/ekle', (req, res) => {
     const id = req.params.id;
     res.send(`Aile üyesi ekleme sayfası - Aile ID: ${id}`);
 });
+
+// Error handling middleware
+router.use(errorHandler);
 
 module.exports = router;
