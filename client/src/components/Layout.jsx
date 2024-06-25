@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { Link, Routes, Route, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, DollarOutlined, OrderedListOutlined, TeamOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, Button } from 'antd';
+import { Layout, Menu, Button } from 'antd';
 import '../assets/css/layout.css';
-import UsersHome from '../pages/users/UsersHome';
-import FinancialAidsHome from '../pages/FinancialAids/FinancialAidsHome';
-import RequirementsHome from '../pages/requirements/RequirementsHome';
-import FamiliesHome from '../pages/families/FamiliesHome';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -47,28 +43,16 @@ const PageLayout = ({ children }) => {
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: '#fff' }}>
-          <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16, marginLeft: 16 }}>
+          <Button type="primary" onClick={toggleCollapsed} style={{ marginLeft: 16 }}>
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </Button>
         </Header>
-        <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
-          <div className="container" style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-            <Routes>
-              <Route path="/kullanici" element={<UsersHome />} />
-              <Route path="/finansal-yardimlar" element={<FinancialAidsHome />} />
-              <Route path="/ihtiyaclar" element={<RequirementsHome />} />
-              <Route path="/aileler" element={<FamiliesHome />} />
-            </Routes>
+        <Content style={{ margin: '16px' }}>
+          <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
             {children}
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Batuhan Kaya tarafından oluşturuldu ©{new Date().getFullYear()}
-        </Footer>
+        <Footer style={{ textAlign: 'center' }}>Batuhan Kaya tarafından oluşturuldu. ©2024</Footer>
       </Layout>
     </Layout>
   );

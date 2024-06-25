@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Space, Table, Button } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import LayoutComponent from '../../components/Layout';
 import AddFamilyModal from './AddFamilyModal';
 import UpdateFamilyModal from './UpdateFamilyModal';
 
@@ -69,7 +68,6 @@ const RequirementsHome = () => {
   };
 
   return (
-    <LayoutComponent>
       <Content>
         <div style={{ marginBottom: 16 }}>
           <Button 
@@ -83,7 +81,6 @@ const RequirementsHome = () => {
         <UpdateFamilyModal visible={updateVisible} onUpdate={handleUpdateFamily} onCancel={() => setUpdateVisible(false)} initialData={currentFamily} />
         <Table columns={columns} dataSource={data} rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'} scroll={{ x: 'max-content' }} />
       </Content>
-    </LayoutComponent>
   );
 };
 

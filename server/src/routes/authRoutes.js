@@ -74,10 +74,10 @@ router.post('/giris', async (req, res) => {
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
-    // Store the refresh token in the database
+    // Store the refresh token in the database with default status 'active'
     const refreshTokenQuery = `
-      INSERT INTO refresh_tokens ("KullaniciId", "Token")
-      VALUES ($1, $2) RETURNING *`;
+      INSERT INTO refresh_tokens ("KullaniciId", "Token", "Durum")
+      VALUES ($1, $2, 'active') RETURNING *`;
     await dbPool.query(refreshTokenQuery, [user.KullaniciId, refreshToken]);
 
     // Respond with the tokens
@@ -88,6 +88,7 @@ router.post('/giris', async (req, res) => {
   }
 });
 
+// Refresh access token
 router.post('/token', async (req, res) => {
   const { refreshToken } = req.body;
 
@@ -100,12 +101,12 @@ router.post('/token', async (req, res) => {
     const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET_KEY);
 
     // SQL query to find the refresh token in the database
-    const queryText = 'SELECT * FROM refresh_tokens WHERE "Token" = $1';
+    const queryText = 'SELECT * FROM refresh_tokens WHERE "Token" = $1 AND "Durum" = \'active\'';
     const { rows } = await dbPool.query(queryText, [refreshToken]);
 
     // If refresh token is not found or invalid, respond with an error
     if (rows.length === 0) {
-      return res.status(403).json({ error: 'Invalid refresh token' });
+      return res.status(403).json({ error: 'Invalid or inactive refresh token' });
     }
 
     const storedToken = rows[0];
@@ -137,8 +138,8 @@ router.post('/cikis', async (req, res) => {
   }
 
   try {
-    // SQL query to delete the refresh token from the database
-    const queryText = 'DELETE FROM refresh_tokens WHERE "Token" = $1';
+    // SQL query to set the Durum of the refresh token to 'inactive'
+    const queryText = 'UPDATE refresh_tokens SET "Durum" = \'inactive\' WHERE "Token" = $1';
     await dbPool.query(queryText, [refreshToken]);
 
     // Respond with success

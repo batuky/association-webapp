@@ -1,32 +1,35 @@
-// src/components/FinancialAids/UpdateFinancialAid.jsx
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Modal, Form, Input } from 'antd';
 
 const UpdateFinancialAidModal = ({ visible, onCancel, onFormSubmit, record }) => {
   const [form] = Form.useForm();
 
-  useState(() => {
+  // Use useEffect to handle side effects
+  useEffect(() => {
     if (record) {
       form.setFieldsValue(record);
     }
   }, [form, record]);
+
+  // Handler for form submission
+  const handleOk = () => {
+    form
+      .validateFields()
+      .then(values => {
+        form.resetFields();
+        onFormSubmit(values);
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
+  };
 
   return (
     <Modal
       title="Finansal Yardım Güncelle"
       visible={visible}
       onCancel={onCancel}
-      onOk={() => {
-        form
-          .validateFields()
-          .then(values => {
-            form.resetFields();
-            onFormSubmit(values);
-          })
-          .catch(info => {
-            console.log('Validate Failed:', info);
-          });
-      }}
+      onOk={handleOk}
     >
       <Form
         form={form}

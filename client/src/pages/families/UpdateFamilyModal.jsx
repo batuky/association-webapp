@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Modal, Form, Input } from 'antd';
 
 const UpdateFamilyModal = ({ visible, onUpdate, onCancel, initialData }) => {
@@ -16,7 +16,7 @@ const UpdateFamilyModal = ({ visible, onUpdate, onCancel, initialData }) => {
         onCancel();
       })
       .catch((info) => {
-        console.log('Validate Failed:', info);
+        console.log('Validation Failed:', info);
       });
   };
 

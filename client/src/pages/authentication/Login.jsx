@@ -3,8 +3,8 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import '../../assets/css/login.css';
 
-const App = () => {
-  const onFinish = (values) => {
+const LoginForm = () => {
+  const handleFinish = (values) => {
     console.log('Received values of form: ', values);
   };
 
@@ -12,12 +12,10 @@ const App = () => {
     <div className="login-container">
       <div className="login-card">
         <Form
-          name="normal_login"
+          name="login_form"
           className="login-form"
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={onFinish}
+          initialValues={{ remember: true }}
+          onFinish={handleFinish}
         >
           <Form.Item
             name="email"
@@ -28,14 +26,17 @@ const App = () => {
               },
             ]}
           >
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="E-posta" />
+            <Input 
+              prefix={<UserOutlined className="site-form-item-icon" />} 
+              placeholder="E-posta" 
+            />
           </Form.Item>
           <Form.Item
             name="password"
             rules={[
               {
                 required: true,
-                message: 'Lütfen sifrenizi girin!',
+                message: 'Lütfen şifrenizi girin!',
               },
             ]}
           >
@@ -50,13 +51,17 @@ const App = () => {
               <Checkbox>Beni hatırla</Checkbox>
             </Form.Item>
 
-            <a className="login-form-forgot" href="">
+            <a className="login-form-forgot" href="/sifremi-unuttum">
               Şifremi unuttum
             </a>
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-form-button">
+            <Button 
+              type="primary" 
+              htmlType="submit" 
+              className="login-form-button"
+            >
               Giriş yap
             </Button>
           </Form.Item>
@@ -66,4 +71,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default LoginForm;

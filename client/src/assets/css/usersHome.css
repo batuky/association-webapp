@@ -1,0 +1,51 @@
+.users-home-content {
+    padding: 24px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centering horizontally */
+  }
+  
+  .form-item {
+    margin-bottom: 16px;
+  }
+  
+  .input {
+    width: 100%;
+  }
+  
+  .button-wrapper {
+    display: flex;
+    justify-content: space-between; /* Distribute space between buttons */
+    flex-wrap: nowrap; /* Prevent wrapping */
+    width: 100%; /* Ensure it takes up full width for alignment */
+  }
+  
+  .delete-button {
+    margin-right: 8px;
+    flex: 1; /* Ensure buttons take equal space */
+  }
+  
+  .update-button {
+    margin-left: 8px;
+    flex: 1; /* Ensure buttons take equal space */
+  }
+  
+  /* Media query for smaller screens with sidebar open */
+  @media (max-width: 576px) {
+    .button-wrapper {
+      flex-direction: column; /* Stack buttons vertically */
+      align-items: stretch; /* Ensure full width */
+    }
+  
+    .delete-button, .update-button {
+      width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+      margin-bottom: 8px; /* Add margin bottom to create space */
+    }
+  
+    .update-button {
+      margin-bottom: 0; /* Remove bottom margin from the last button */
+    }
+  }

@@ -128,9 +128,9 @@ router.post('/giris', function _callee2(req, res) {
           }; // Generate tokens
 
           accessToken = generateAccessToken(payload);
-          refreshToken = generateRefreshToken(payload); // Store the refresh token in the database
+          refreshToken = generateRefreshToken(payload); // Store the refresh token in the database with default status 'active'
 
-          refreshTokenQuery = "\n      INSERT INTO refresh_tokens (\"KullaniciId\", \"Token\")\n      VALUES ($1, $2) RETURNING *";
+          refreshTokenQuery = "\n      INSERT INTO refresh_tokens (\"KullaniciId\", \"Token\", \"Durum\")\n      VALUES ($1, $2, 'active') RETURNING *";
           _context2.next = 21;
           return regeneratorRuntime.awrap(dbPool.query(refreshTokenQuery, [user.KullaniciId, refreshToken]));
 
@@ -157,7 +157,8 @@ router.post('/giris', function _callee2(req, res) {
       }
     }
   }, null, null, [[1, 24]]);
-});
+}); // Refresh access token
+
 router.post('/token', function _callee3(req, res) {
   var refreshToken, decoded, queryText, _ref3, rows, storedToken, payload, newAccessToken;
 
@@ -181,7 +182,7 @@ router.post('/token', function _callee3(req, res) {
           // Verify the refresh token
           decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET_KEY); // SQL query to find the refresh token in the database
 
-          queryText = 'SELECT * FROM refresh_tokens WHERE "Token" = $1';
+          queryText = 'SELECT * FROM refresh_tokens WHERE "Token" = $1 AND "Durum" = \'active\'';
           _context3.next = 8;
           return regeneratorRuntime.awrap(dbPool.query(queryText, [refreshToken]));
 
@@ -195,7 +196,7 @@ router.post('/token', function _callee3(req, res) {
           }
 
           return _context3.abrupt("return", res.status(403).json({
-            error: 'Invalid refresh token'
+            error: 'Invalid or inactive refresh token'
           }));
 
         case 12:
@@ -256,8 +257,8 @@ router.post('/cikis', function _callee4(req, res) {
 
         case 3:
           _context4.prev = 3;
-          // SQL query to delete the refresh token from the database
-          queryText = 'DELETE FROM refresh_tokens WHERE "Token" = $1';
+          // SQL query to set the Durum of the refresh token to 'inactive'
+          queryText = 'UPDATE refresh_tokens SET "Durum" = \'inactive\' WHERE "Token" = $1';
           _context4.next = 7;
           return regeneratorRuntime.awrap(dbPool.query(queryText, [refreshToken]));
 
